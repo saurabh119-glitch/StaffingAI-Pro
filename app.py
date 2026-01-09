@@ -1,8 +1,58 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+# In your app.py
 import random
 
+def generate_synthetic_resume(role="AI Engineer", years=5):
+    """Generate realistic synthetic resume for demos"""
+    
+    # Indian names (public domain)
+    first_names = ["Rahul", "Priya", "Amit", "Sneha", "Vikram", "Anjali", "Arjun", "Meera"]
+    last_names = ["Sharma", "Patel", "Kumar", "Singh", "Gupta", "Reddy", "Mukherjee", "Desai"]
+    
+    name = f"{random.choice(first_names)} {random.choice(last_names)}"
+    
+    # Skills based on role
+    skill_sets = {
+        "AI Engineer": ["Python", "TensorFlow", "PyTorch", "Scikit-learn", "Streamlit", "AWS"],
+        "Data Scientist": ["Python", "SQL", "Pandas", "ML", "Tableau", "Big Data"],
+        "Cybersecurity": ["Network Security", "Ethical Hacking", "SIEM", "Compliance", "Risk Assessment"],
+        "FinTech Developer": ["Java", "Blockchain", "Payment Systems", "RegTech", "API Integration"]
+    }
+    
+    skills = random.sample(skill_sets.get(role, skill_sets["AI Engineer"]), 4)
+    
+    # Education (Indian institutions)
+    colleges = ["IIT Delhi", "NIT Trichy", "DTU", "SRCC", "Christ University", "VIT", "Manipal"]
+    degrees = ["B.Tech", "M.Tech", "B.Com", "MBA"]
+    
+    resume = f"""
+{name}
+{role} | {years}+ Years Experience
+
+PROFESSIONAL SUMMARY
+Results-driven {role.lower()} with {years} years of experience in {', '.join(skills[:2])}. 
+Proven track record of delivering AI solutions for MNC clients.
+
+TECHNICAL SKILLS
+{', '.join(skills)}
+
+EXPERIENCE
+Senior {role}
+• Built AI applications using {skills[0]} and {skills[1]}
+• Reduced time-to-hire by 40% for global clients
+• Deployed predictive models saving ₹10L+/month
+
+EDUCATION
+{random.choice(degrees)} in Computer Science
+{random.choice(colleges)} | 2015-2019
+
+CERTIFICATIONS
+• AI Mastermind Certification
+• AWS Certified Developer
+"""
+    return resume.strip()
 st.set_page_config(
     page_title="StaffingAI Pro - All-in-One Platform for Staffing Companies",
     page_icon="👥",
@@ -98,6 +148,23 @@ elif module == "1. AI Candidate Sourcing":
             st.info("✅ **Diversity Score**: 67% (balanced gender/region)\n✅ **Bias Check**: No demographic filters used\n✅ **Compliance**: GDPR/DPDP ready")
 
 # Module 2: AI JD & Resume Optimizer
+# In your "AI JD & Resume Optimizer" module
+if st.button("Optimize JD & Resume"):
+    if client_jd:
+        # Generate synthetic resume based on JD
+        role_hint = "AI Engineer"  # Extract from JD later
+        synthetic_resume = generate_synthetic_resume(role=role_hint, years=5)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("✅ Optimized Job Description")
+            # ... your JD optimization logic
+            
+        with col2:
+            st.subheader("✅ Synthetic Candidate Resume")
+            st.text_area("Demo Resume", synthetic_resume, height=300)
+            
+        st.info("💡 **Note**: This is a synthetic resume for demo purposes. Real candidate data requires consent.")
 elif module == "2. AI JD & Resume Optimizer":
     st.header("✍️ AI JD & Resume Optimizer")
     st.subheader("Make your JDs and resumes ATS-friendly")
@@ -248,3 +315,10 @@ elif module == "5. AI Cost Optimizer":
 # Footer
 st.markdown("---")
 st.caption("👥 StaffingAI Pro — Built by a 18-year staffing veteran | Ethical AI | Audit-Ready | [Book Demo](https://calendly.com/yourname)")
+
+st.markdown("""
+⚠️ **Compliance Notice**:  
+This demo uses **synthetic data** for illustration.  
+Real candidate data processing requires explicit consent per **DPDP Act 2023** and **GDPR**.  
+StaffingAI Pro is designed for **ethical, compliant recruitment** only.
+""")
